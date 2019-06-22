@@ -1,0 +1,623 @@
+<FlatButton@ButtonBehavior+Label>:
+
+<MyButton@Button>:
+    text_size: self.size
+    font_size: '20sp'
+    color: 0,1,0,.7
+    #color: 0,0,0,7
+    text_size: self.width, None
+    markup: True
+    bold: True
+    halign:'center'
+    valign:'middle'
+    background_normal: ''
+    background_color: .60, .60, .60, 1
+
+<MyButton1@Button>:
+    text_size: self.size
+    font_size: '20sp'
+    #color: 0,1,0,.7
+    color: 0,0,0,7
+    text_size: self.width, None
+    markup: True
+    bold: True
+    halign:'center'
+    valign:'middle'
+
+<MyBack@Button>:
+    text_size: self.size
+    font_size: '15sp'
+    text: 'main' if self.state == 'normal' else '<--'
+    #color: 0,1,0,.7
+    color: 0,0,0,7
+    text_size: self.width, None
+    markup: True
+    bold: True
+    halign:'center'
+    valign:'middle'
+
+WindowManager:
+    SecondWindow:
+    MainWindow:
+    CreateAccountWindow:
+
+    ThirdWindow:
+    ForthWindow:
+    FifthWindow:
+    SixthWindow:
+    SeventhWindow:
+    EighthWindow:
+
+<MainWindow>:
+    name: "main"
+    id: main_win
+    email: email
+    password: password
+    FloatLayout:
+
+        Label:
+            text:"Email: "
+            font_size: (root.width**2 + root.height**2) / 13**4
+            pos_hint: {"x":0.1, "top":0.9}
+            size_hint: 0.35, 0.15
+
+        TextInput:
+            id: email
+            font_size: (root.width**2 + root.height**2) / 13**4
+            multiline: False
+            pos_hint: {"x": 0.45 , "top":0.87}
+            size_hint: 0.4, 0.1
+
+        Label:
+            text:"Password: "
+            font_size: (root.width**2 + root.height**2) / 13**4
+            pos_hint: {"x":0.1, "top":0.7}
+            size_hint: 0.35, 0.15
+
+        TextInput:
+            id: password
+            font_size: (root.width**2 + root.height**2) / 13**4
+            multiline: False
+            password: True
+            pos_hint: {"x": 0.45, "top":0.67}
+            size_hint: 0.4, 0.1
+
+        Button:
+            id: btn
+            text: "LogIn"
+            bold: True
+            font_size: (root.width**2 + root.height**2) / 13**4
+            pos_hint:{"x":0.2,"y":0.05}
+            size_hint: 0.6, 0.2
+            on_release:
+                root.verify_credential()
+                #app.root.current = "second" #if passw.text == "jix" else root.fileBrowse()
+                root.manager.transition.direction = "up"
+                root.manager.transition.duration = 1
+
+        Button:
+            id: btn2
+            text: "Register"
+            bold: True
+            pos_hint:{"x":0.3,"y":0.3}
+            size_hint: 0.4, 0.1
+            font_size: (root.width**2 + root.height**2) / 17**4
+            on_release:
+                root.createBtn()
+                root.manager.transition.direction = "right"
+                root.manager.transition.duration = 1
+
+            BoxLayout:
+                Image:
+                    source: 'zips/unkSpin.zip'
+                    anim_delay: 1/40
+                    allow_stretch: False
+                    pos_hint: {'x': .5, 'y': .3}
+
+<CreateAccountWindow>:
+    name: "create"
+    namee: namee
+    email: email
+    password: passw
+    FloatLayout:
+        cols:1
+        FloatLayout:
+            size: root.width, root.height/2
+            Label:
+                text: "Create an Account"
+                size_hint: 0.8, 0.2
+                bold: True
+                pos_hint: {"x":0.1, "top":1}
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0, "top":0.8}
+                text: "Name: "
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            TextInput:
+                pos_hint: {"x":0.5, "top":0.8}
+                size_hint: 0.4, 0.12
+                id: namee
+                multiline: False
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0, "top":0.8-0.13}
+                text: "Email: "
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            TextInput:
+                pos_hint: {"x":0.5, "top":0.8-0.13}
+                size_hint: 0.4, 0.12
+                id: email
+                multiline: False
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0, "top":0.8-0.13*2}
+                text: "Password: "
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            TextInput:
+                pos_hint: {"x":0.5, "top":0.8-0.13*2}
+                size_hint: 0.4, 0.12
+                id: passw
+                multiline: False
+                password: True
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+        Button:
+            pos_hint:{"x":0.3,"y":0.25}
+            size_hint: 0.4, 0.1
+            bold: True
+            font_size: (root.width**2 + root.height**2) / 17**4
+            text: "Already have an Account? Log In"
+            on_release:
+                root.manager.transition.direction = "left"
+                root.login()
+
+        Button:
+            pos_hint:{"x":0.2,"y":0.05}
+            size_hint: 0.6, 0.15
+            bold: True
+            text: "Submit"
+            font_size: (root.width**2 + root.height**2) / 14**4
+            on_release:
+                root.manager.transition.direction = "left"
+                root.submit()
+
+<SecondWindow>:
+    name: "second"
+    BoxLayout:
+		orientation: 'vertical'
+		padding: root.width * 0.05, root.height * .05
+		spacing: '5dp'
+        MyBack:
+            size_hint: (.15, .07)
+            pos_hint: {'x': .0, 'y': .9}
+            on_release:
+                app.root.current = "main"
+                root.manager.transition.direction = "right"
+
+        GridLayout:
+            rows: 3
+            cols: 3
+            spacing: 10
+            MyButton:
+                id: opencv
+                text: "Camera"
+                on_release:
+                    app.root.current = "third"
+                    root.manager.transition.direction = "left"
+
+            MyButton1:
+                text: "Face Recognize"
+                on_release:
+                    app.root.current = "forth"
+                    root.manager.transition.direction = "left"
+
+            MyButton:
+                text: "Object Detection"
+                on_release:
+                    app.root.current = "fifth"
+                    root.manager.transition.direction = "left"
+            MyButton1:
+                text: "Image Tool"
+                on_release:
+                    app.root.current = "Sixth"
+                    root.manager.transition.direction = "left"
+            MyButton:
+                text: "Test"
+                on_release:
+                    app.root.current = "Seventh"
+                    root.manager.transition.direction = "left"
+            MyButton1:
+                text: "Test2"
+                on_release:
+                    app.root.current = "eight"
+                    root.manager.transition.direction = "left"
+            MyButton:
+                id: ttt
+                text: "??"
+            MyButton1:
+                text: "??"
+
+            MyButton:
+                text: "??"
+
+
+<ThirdWindow>:
+    name: "third"
+    BoxLayout:
+		orientation: 'vertical'
+		padding: root.width * 0.05, root.height * .05
+		spacing: '5dp'
+        MyBack:
+            size_hint: (.15, .07)
+            pos_hint: {'x': .0, 'y': .9}
+            on_release:
+                app.root.current = "second"
+                root.manager.transition.direction = "right"
+
+        Label:
+            text: "Camera"
+            bold: True
+            size_hint: (.2, .07)
+            pos_hint:{'x': .4, 'y': .9}
+            font_size: 20
+
+        GridLayout:
+            rows: 3
+            cols: 3
+            spacing: 10
+            MyButton:
+                text: "start Cam"
+                on_release: root.startCamera()
+
+            MyButton1:
+                text: "Record Cam"
+                on_release: root.recordCamera()
+
+            MyButton:
+                text: "Detect Cam"
+                on_release: root.detectCamera()
+            MyButton1:
+                text: "Wifi\n Mobile Detect"
+                on_release: root.wifiCamera()
+            MyButton:
+                text: "IP Cam"
+                on_release: root.ipCamera()
+            MyButton1:
+                text: "DVR"
+                on_release: root.dvrCamera()
+            FloatLayout:
+		        spacing: '5dp'
+
+                TextInput:
+                    id: ipCam
+                    size_hint: 1, .2
+                    pos_hint: {'x': 1.05, 'y': 0}
+                    text: ''
+                    multiline: False
+                TextInput:
+                    id: dvrCam
+                    size_hint: 1, .2
+                    pos_hint: {'x': 2.1, 'y': 0}
+                    text: ''
+                    multiline: False
+                TextInput:
+                    id: dvrChan
+                    size_hint: .2, .2
+                    pos_hint: {'x': 2.5, 'y': .5}
+                    text: ''
+                    multiline: False
+                Label:
+                    text: "Enter cam IP"
+                    bold: True
+                    size_hint: (.2, .7)
+                    pos_hint:{'x': 1.5, 'y': 0}
+                    font_size: 20
+                Label:
+                    text: "Enter DVR IP"
+                    bold: True
+                    size_hint: (0.2, .7)
+                    pos_hint:{'x': 2.5, 'y': 0}
+                    font_size: 20
+                Label:
+                    text: "Enter DVR Channel"
+                    bold: True
+                    size_hint: (0.2, .7)
+                    pos_hint:{'x': 2.5, 'y': .5}
+                    font_size: 20
+
+
+<ForthWindow>:
+    name: "forth"
+    BoxLayout:
+		orientation: 'vertical'
+		padding: root.width * 0.05, root.height * .05
+		spacing: '5dp'
+        MyBack:
+            size_hint: (.15, .07)
+            pos_hint: {'x': .0, 'y': .9}
+            on_release:
+                app.root.current = "second"
+                root.manager.transition.direction = "right"
+
+        Label:
+            text: "Face Recognize"
+            bold: True
+            size_hint: (.2, .07)
+            pos_hint:{'x': .42, 'y': .9}
+            font_size: 20
+        GridLayout:
+            rows: 3
+            cols: 3
+            spacing: 10
+            MyButton:
+                text: "Face"
+                id: face_button
+                on_release: root.faceCamera()
+            MyButton1:
+                text: "Train"
+                id: train_button
+                on_release: root.trainCamera()
+
+            MyButton:
+                text: "Recognize"
+                id: recg_button
+                on_release: root.recgCamera()
+
+            BoxLayout:
+		        spacing: '5dp'
+                TextInput:
+                    id: nub_user
+                    size_hint: (.2, .2)
+                    pos_hint:{'x': 0, 'y': 0}
+                    text: ''
+                    multiline: False
+                Label:
+                    text: 'put a number then click Face Button'
+                    size_hint: (.2, .07)
+                    pos_hint:{'x': 0, 'y': .3}
+                    font_size: 20
+
+
+<FifthWindow>:
+    name: "fifth"
+    BoxLayout:
+		orientation: 'vertical'
+		padding: root.width * 0.05, root.height * .05
+		spacing: '5dp'
+		MyBack:
+            size_hint: (.15, .07)
+            pos_hint: {'x': .0, 'y': .9}
+            on_release:
+                app.root.current = "second"
+                root.manager.transition.direction = "right"
+        Label:
+            text: "Object Detection"
+            bold: True
+            size_hint: (.2, .07)
+            pos_hint:{'x': .42, 'y': .9}
+            font_size: 20
+        Label:
+            text: 'in Track MultiObject\nPress any other key to select next object\nPress q to quit selecting boxes and start tracking '
+            markup: True
+            size_hint: .8, .2
+        GridLayout:
+            rows: 3
+            cols: 3
+            spacing: 10
+            MyButton1:
+                id: live_detect
+                text: 'Live Detect\n YOLO'
+                on_release: root.liveDetect()
+            MyButton:
+                id: track_mobject
+                text: 'Track\n Multi-Object'
+                on_release: root.trackMobject()
+            MyButton1:
+                id: age_gender
+                text: 'Live\nAge Gender'
+                on_release: root.ageGender()
+            MyButton:
+                id: live_detetctT
+                text: 'Live Detect\n Tensorflow'
+                on_release: root.liveDetectT()
+            FloatLayout:
+		        spacing: '5dp'
+                TextInput:
+                    id: video_track
+                    size_hint: 1, .2
+                    pos_hint: {'x': 0, 'y': 0}
+                    text: ''
+                    multiline: False
+                Label:
+                    text: "Import Video"
+                    bold: True
+                    size_hint: (0.2, .7)
+                    pos_hint:{'x': .4, 'y': 0}
+                    font_size: 20
+
+
+<SixthWindow>:
+    name: "Sixth"
+    BoxLayout:
+		orientation: 'vertical'
+		padding: root.width * 0.05, root.height * .05
+		spacing: '5dp'
+		MyBack:
+            size_hint: (.15, .07)
+            pos_hint: {'x': .0, 'y': .9}
+            on_release:
+                app.root.current = "second"
+                root.manager.transition.direction = "right"
+        Label:
+            text: "Image Tool"
+            bold: True
+            size_hint: (.2, .07)
+            pos_hint:{'x': .42, 'y': .9}
+            font_size: 20
+
+        GridLayout:
+            rows: 3
+            cols: 3
+            spacing: 10
+            MyButton:
+                id: face_swap
+                text:'Face Swap'
+                on_release: root.faceSwap()
+
+            MyButton1:
+                id: find_image
+                text:'Find in\n Image'
+                on_release: root.findImage()
+
+            MyButton:
+                id: ppl_count
+                text: 'People Counting\n in Image'
+                on_release: root.pplCount()
+
+            FloatLayout:
+		        spacing: '5dp'
+                TextInput:
+                    id: swap_imagedn
+                    size_hint: 1, .2
+                    pos_hint: {'x': .0, 'y': 0}
+                    text: ''
+                    multiline: False
+                TextInput:
+                    id: swap_imageup
+                    size_hint: 1, .2
+                    pos_hint: {'x': 0, 'y': .5}
+                    text: ''
+                    multiline: False
+                TextInput:
+                    id: find_imagedn
+                    size_hint: 1, .2
+                    pos_hint: {'x': 1.1, 'y': 0}
+                    text: ''
+                    multiline: False
+                TextInput:
+                    id: find_imageup
+                    size_hint: 1, .2
+                    pos_hint: {'x': 1.1, 'y': .5}
+                    text: ''
+                    multiline: False
+                TextInput:
+                    id: count_image
+                    size_hint: 1, .2
+                    pos_hint: {'x': 2.15, 'y': 0}
+                    text: ''
+                    multiline: False
+                Label:
+                    text: "Face 1"
+                    bold: True
+                    size_hint: (.2, .7)
+                    pos_hint:{'x': 0.3, 'y': .5}
+                    font_size: 20
+                Label:
+                    text: "Find In Image"
+                    bold: True
+                    size_hint: (0.2, .7)
+                    pos_hint:{'x': 1.5, 'y': .5}
+                    font_size: 20
+                Label:
+                    text: "Face 2"
+                    bold: True
+                    size_hint: (.2, .7)
+                    pos_hint:{'x': .3, 'y': 0}
+                    font_size: 20
+                Label:
+                    text: "To Find Image"
+                    bold: True
+                    size_hint: (.2, .7)
+                    pos_hint:{'x': 1.5, 'y': 0}
+                    font_size: 20
+                Label:
+                    text: "Image to Count"
+                    bold: True
+                    size_hint: (.2, .7)
+                    pos_hint:{'x': 2.5, 'y': 0}
+                    font_size: 20
+
+<SeventhWindow>:
+    name: "Seventh"
+    text_input: text_input
+    BoxLayout:
+		orientation: 'vertical'
+		padding: root.width * 0.05, root.height * .05
+		spacing: '5dp'
+		MyBack:
+            size_hint: (.15, .07)
+            pos_hint: {'x': .0, 'y': .9}
+            on_release:
+                app.root.current = "second"
+                root.manager.transition.direction = "right"
+        Label:
+            text: "Image Tool"
+            bold: True
+            size_hint: (.2, .07)
+            pos_hint:{'x': .42, 'y': .9}
+            font_size: 20
+
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout:
+                size_hint_y: None
+                height: 30
+                Button:
+                    text: 'Load'
+                    on_release: root.show_load()
+
+        BoxLayout:
+            TextInput:
+                id: text_input
+                text: ''
+
+            RstDocument:
+                text: text_input.text
+                show_errors: True
+
+<LoadDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            My1Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            MyButton:
+                text: "Load"
+                on_release: root.load(filechooser.path, filechooser.selection)
+
+<EighthWindow>:
+    name: "eight"
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayout:
+            size_hint_y: None
+            height: sp(52)
+
+            Button:
+                text: 'Icon View'
+                on_press: fc.view_mode = 'icon'
+
+
+        FileChooser:
+            id: fc
+            FileChooserIconLayout
+            #FileChooserListLayout
