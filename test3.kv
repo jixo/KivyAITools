@@ -47,6 +47,7 @@ WindowManager:
     SixthWindow:
     SeventhWindow:
     EighthWindow:
+    NinethWindow:
 
 <MainWindow>:
     name: "main"
@@ -221,7 +222,7 @@ WindowManager:
                     root.manager.transition.direction = "left"
 
             MyButton:
-                text: "Object Detection"
+                text: "Live\nObject Detection"
                 on_release:
                     app.root.current = "fifth"
                     root.manager.transition.direction = "left"
@@ -231,7 +232,7 @@ WindowManager:
                     app.root.current = "Sixth"
                     root.manager.transition.direction = "left"
             MyButton:
-                text: "Test"
+                text: "Image\nObject Detection"
                 on_release:
                     app.root.current = "Seventh"
                     root.manager.transition.direction = "left"
@@ -242,7 +243,10 @@ WindowManager:
                     root.manager.transition.direction = "left"
             MyButton:
                 id: ttt
-                text: "??"
+                text: "TestCam"
+                on_release:
+                    app.root.current = "nine"
+                    root.manager.transition.direction = "left"
             MyButton1:
                 text: "??"
 
@@ -548,7 +552,6 @@ WindowManager:
 
 <SeventhWindow>:
     name: "Seventh"
-    text_input: text_input
     BoxLayout:
 		orientation: 'vertical'
 		padding: root.width * 0.05, root.height * .05
@@ -560,29 +563,44 @@ WindowManager:
                 app.root.current = "second"
                 root.manager.transition.direction = "right"
         Label:
-            text: "Image Tool"
+            text: "Image Tools 2"
             bold: True
             size_hint: (.2, .07)
             pos_hint:{'x': .42, 'y': .9}
             font_size: 20
+        GridLayout:
+            rows: 3
+            cols: 3
+            spacing: 10
+            MyButton:
+                id: Obj_Detc
+                text:'AI\nImage Detection'
+                on_release: root.ObjectDetect()
+            MyButton1:
+                id: ??
+                text:'??'
+                #on_release: root.findImage()
 
-        BoxLayout:
-            orientation: 'vertical'
-            BoxLayout:
-                size_hint_y: None
-                height: 30
-                Button:
-                    text: 'Load'
-                    on_release: root.show_load()
+            MyButton:
+                id: ??
+                text: '??'
+                #on_release: root.pplCount()
 
-        BoxLayout:
-            TextInput:
-                id: text_input
-                text: ''
+            FloatLayout:
+		        spacing: '5dp'
+                TextInput:
+                    id: object_detect
+                    size_hint: 1, .2
+                    pos_hint: {'x': .0, 'y': 0}
+                    text: ''
+                    multiline: False
+                Label:
+                    text: "Object Detection"
+                    bold: True
+                    size_hint: (.2, .7)
+                    pos_hint:{'x': .3, 'y': 0}
+                    font_size: 20
 
-            RstDocument:
-                text: text_input.text
-                show_errors: True
 
 <LoadDialog>:
     BoxLayout:
@@ -621,3 +639,21 @@ WindowManager:
             id: fc
             FileChooserIconLayout
             #FileChooserListLayout
+
+<NinethWindow>:
+    name: "nine"
+    BoxLayout:
+		orientation: 'vertical'
+		padding: root.width * 0.05, root.height * .05
+		spacing: '5dp'
+		MyBack:
+            size_hint: (.15, .07)
+            pos_hint: {'x': .0, 'y': .9}
+            on_release:
+                app.root.current = "second"
+                root.manager.transition.direction = "right"
+        BoxLayout:
+            orientation: 'vertical'
+            padding: root.width * 0.05, root.height * .05
+            spacing: '5dp'
+

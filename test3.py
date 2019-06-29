@@ -27,7 +27,7 @@ from collections import defaultdict
 from io import StringIO
 from matplotlib import pyplot as plt
 from PIL import Image
-
+from imageai.Detection import ObjectDetection
 
 from object_recognition_detection.utils import label_map_util
 
@@ -116,13 +116,13 @@ class ThirdWindow(Screen):
         self.start_button.disabled = True  # Prevents the user from clicking start again which may crash the program
         self.rec_button = self.ids['rec_button']
         self.rec_button.disabled = True
-        self.det_button = sef.ids['det_button']
+        self.det_button = self.ids['det_button']
         self.det_button.disabled = True
-        self.wifi_button = sef.ids['wifi_button']
+        self.wifi_button = self.ids['wifi_button']
         self.wifi_button.disabled = True
-        self.ip_cam = sef.ids['ip_cam']
+        self.ip_cam = self.ids['ip_cam']
         self.ip_cam.disabled = True
-        self.dvr_cam = sef.ids['dvr_cam']
+        self.dvr_cam = self.ids['dvr_cam']
         self.dvr_cam.disabled = True
 
 ##################################### Start CAM ###############################################
@@ -1217,7 +1217,11 @@ class SixthWindow(Screen):
 
 
 class SeventhWindow(Screen):
-    pass
+
+    def buttObj(self):
+        self.Obj_Detc = self.ids['Obj_Detc']
+        self.Obj_Detc.disabled = True
+
     # loadfile = ObjectProperty(None)
     # text_input = ObjectProperty(None)
     # cancel = ObjectProperty(None)
@@ -1238,20 +1242,30 @@ class SeventhWindow(Screen):
     #     self.dismiss_popup()
 
 
+    def ObjectDetect(self):
+        execution_path = os.getcwd()
+
+        detector = ObjectDetection()
+        detector.setModelTypeAsRetinaNet()
+        detector.setModelPath(os.path.join(execution_path, "weight/resnet50_coco_best_v2.0.1.h5"))
+        detector.loadModel()
+        detections = detector.detectObjectsFromImage(input_image=os.path.join(execution_path,
+                                                                              "images/image2.jpg"),
+                                                     output_image_path=os.path.join(execution_path,
+                                                                                    "output_images/imagenew.jpg"))
+        for eachObject in detections:
+            print(eachObject["name"], " : ", eachObject["percentage_probability"])
+
 ##################################################################################################
 
 
 ########################################### Eighth Window ####################################
 
 class EighthWindow(Screen):
-    def build(self):
-        v = root.ids.fc
-        if len(sys.argv) > 1:
-            v.path = sys.argv[1]
+    pass
 
-        v.bind(selection=lambda *x: pprint("selection: %s" % x[1:]))
-        v.bind(path=lambda *x: pprint("path: %s" % x[1:]))
-
+class NinethWindow(Screen):
+    pass
 
 class WindowManager(ScreenManager):
     pass
@@ -1259,7 +1273,6 @@ class WindowManager(ScreenManager):
 kv = Builder.load_file("test3.kv")
 
 db = DataBase("users.txt")
-
 
 class test3(App):
     def build(self):
