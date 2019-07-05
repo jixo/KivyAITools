@@ -22,6 +22,8 @@ from database import DataBase
 import tarfile
 import tensorflow as tf
 import zipfile
+import six.moves.urllib as urllib
+from gtts import gTTS
 
 from collections import defaultdict
 from io import StringIO
@@ -116,13 +118,13 @@ class ThirdWindow(Screen):
         self.start_button.disabled = True  # Prevents the user from clicking start again which may crash the program
         self.rec_button = self.ids['rec_button']
         self.rec_button.disabled = True
-        self.det_button = sef.ids['det_button']
+        self.det_button = self.ids['det_button']
         self.det_button.disabled = True
-        self.wifi_button = sef.ids['wifi_button']
+        self.wifi_button = self.ids['wifi_button']
         self.wifi_button.disabled = True
-        self.ip_cam = sef.ids['ip_cam']
+        self.ip_cam = self.ids['ip_cam']
         self.ip_cam.disabled = True
-        self.dvr_cam = sef.ids['dvr_cam']
+        self.dvr_cam = self.ids['dvr_cam']
         self.dvr_cam.disabled = True
 
 ##################################### Start CAM ###############################################
@@ -298,7 +300,7 @@ class ForthWindow(Screen):
         self.face_button.disabled = True  # Prevents the user from clicking start again which may crash the program
         self.train_button = self.ids['train_button']
         self.train_button.disabled = True
-        self.recg_button = sef.ids['recg_button']
+        self.recg_button = self.ids['recg_button']
         self.recg_button.disabled = True
 
 
@@ -1216,6 +1218,8 @@ class SeventhWindow(Screen):
     def buttObj(self):
         self.face_Extract = self.ids['face_Extract']
         self.face_Extract.disabled = True
+        self.text_Speech = self.ids['text_Speech']
+        self.text_Speech.disabled = True
 
 
     def FaceExtract(self):
@@ -1260,9 +1264,32 @@ class SeventhWindow(Screen):
 
         print("Extracted " + str(count) + " faces from all images")
 
+############################################ Text To Speech ######################################
+
+    def Text2Speech(self):
+        self.tex2Speech = self.ids['tex2Speech']
+        filename = self.tex2Speech.text
+        mytext = filename
+
+        # Language in which you want to convert
+        language = 'en'
+
+        # Passing the text and language to the engine,
+        # here we have marked slow=False. Which tells
+        # the module that the converted audio should
+        # have a high speed
+        myobj = gTTS(text=mytext, lang=language, slow=False)
+
+        # Saving the converted audio in a mp3 file named
+        # welcome
+        myobj.save("text2speech.mp3")
+
+        # Playing the converted file
+        #os.system("mpg321 welcome.mp3")
+
+##############################################################################################
 
 
-##################################################################################################
 
 
 ########################################### Eighth Window ####################################

@@ -577,9 +577,9 @@ WindowManager:
                 text:'Face Extractor'
                 on_release: root.FaceExtract()
             MyButton1:
-                id: ??
-                text:'??'
-                #on_release: root.findImage()
+                id: text_Speech
+                text:'Text To\n Speech'
+                on_release: root.Text2Speech()
 
             MyButton:
                 id: ??
@@ -589,16 +589,16 @@ WindowManager:
             FloatLayout:
 		        spacing: '5dp'
                 TextInput:
-                    id: object_detect
+                    id: tex2Speech
                     size_hint: 1, .2
-                    pos_hint: {'x': .0, 'y': 0}
+                    pos_hint: {'x': 1.1, 'y': 0}
                     text: ''
                     multiline: False
                 Label:
-                    text: "Object Detection"
+                    text: "Type a text"
                     bold: True
                     size_hint: (.2, .7)
-                    pos_hint:{'x': .3, 'y': 0}
+                    pos_hint:{'x': 1.5, 'y': 0}
                     font_size: 20
 
 
