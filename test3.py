@@ -27,7 +27,7 @@ from collections import defaultdict
 from io import StringIO
 from matplotlib import pyplot as plt
 from PIL import Image
-from imageai.Detection import ObjectDetection
+
 
 from object_recognition_detection.utils import label_map_util
 
@@ -116,13 +116,13 @@ class ThirdWindow(Screen):
         self.start_button.disabled = True  # Prevents the user from clicking start again which may crash the program
         self.rec_button = self.ids['rec_button']
         self.rec_button.disabled = True
-        self.det_button = self.ids['det_button']
+        self.det_button = sef.ids['det_button']
         self.det_button.disabled = True
-        self.wifi_button = self.ids['wifi_button']
+        self.wifi_button = sef.ids['wifi_button']
         self.wifi_button.disabled = True
-        self.ip_cam = self.ids['ip_cam']
+        self.ip_cam = sef.ids['ip_cam']
         self.ip_cam.disabled = True
-        self.dvr_cam = self.ids['dvr_cam']
+        self.dvr_cam = sef.ids['dvr_cam']
         self.dvr_cam.disabled = True
 
 ##################################### Start CAM ###############################################
@@ -1211,50 +1211,56 @@ class SixthWindow(Screen):
 
 ####################################################### Seventh Window ###################################
 
-# class LoadDialog(FloatLayout):
-#     load = ObjectProperty(None)
-#     cancel = ObjectProperty(None)
-
-
 class SeventhWindow(Screen):
 
     def buttObj(self):
-        self.Obj_Detc = self.ids['Obj_Detc']
-        self.Obj_Detc.disabled = True
-
-    # loadfile = ObjectProperty(None)
-    # text_input = ObjectProperty(None)
-    # cancel = ObjectProperty(None)
-    #
-    # def dismiss_popup(self):
-    #     self._popup.dismiss()
-    #
-    # def show_load(self):
-    #     content = LoadDialog(load=self.load, cancel=self.dismiss_popup)
-    #     self._popup = Popup(title="Load file", content=content,
-    #                         size_hint=(0.9, 0.9))
-    #     self._popup.open()
-    #
-    # def load(self, path, filename):
-    #     with open(os.path.join(path, filename[0])) as stream:
-    #         self.text_input.text = stream.read()
-    #
-    #     self.dismiss_popup()
+        self.face_Extract = self.ids['face_Extract']
+        self.face_Extract.disabled = True
 
 
-    def ObjectDetect(self):
-        execution_path = os.getcwd()
+    def FaceExtract(self):
+        # Define paths
+        base_dir = os.path.dirname(__file__)
+        prototxt_path = os.path.join(base_dir + '/face_extractor/model_data/deploy.prototxt')
+        caffemodel_path = os.path.join(base_dir + '/face_extractor/model_data/weights.caffemodel')
 
-        detector = ObjectDetection()
-        detector.setModelTypeAsRetinaNet()
-        detector.setModelPath(os.path.join(execution_path, "weight/resnet50_coco_best_v2.0.1.h5"))
-        detector.loadModel()
-        detections = detector.detectObjectsFromImage(input_image=os.path.join(execution_path,
-                                                                              "images/image2.jpg"),
-                                                     output_image_path=os.path.join(execution_path,
-                                                                                    "output_images/imagenew.jpg"))
-        for eachObject in detections:
-            print(eachObject["name"], " : ", eachObject["percentage_probability"])
+        # Read the model
+        model = cv2.dnn.readNetFromCaffe(prototxt_path, caffemodel_path)
+
+        # Create directory 'faces' if it does not exist
+        if not os.path.exists('faces'):
+            print("New directory created")
+            os.makedirs('faces')
+
+        # Loop through all images and strip out faces
+        count = 0
+        for file in os.listdir(base_dir + '/face_extractor/images'):
+            file_name, file_extension = os.path.splitext(file)
+            if (file_extension in ['.png', '.jpg']):
+                image = cv2.imread(base_dir + '/face_extractor/images/' + file)
+
+                (h, w) = image.shape[:2]
+                blob = cv2.dnn.blobFromImage(cv2.resize(image, (300, 300)), 1.0, (300, 300), (104.0, 177.0, 123.0))
+
+                model.setInput(blob)
+                detections = model.forward()
+
+                # Identify each face
+                for i in range(0, detections.shape[2]):
+                    box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+                    (startX, startY, endX, endY) = box.astype("int")
+
+                    confidence = detections[0, 0, i, 2]
+
+                    # If confidence > 0.5, save it as a separate file
+                    if (confidence > 0.5):
+                        count += 1
+                        frame = image[startY:endY, startX:endX]
+                        cv2.imwrite(base_dir + '/face_extractor/faces/' + str(i) + '_' + file, frame)
+
+        print("Extracted " + str(count) + " faces from all images")
+
+
 
 ##################################################################################################
 
@@ -1273,6 +1279,7 @@ class WindowManager(ScreenManager):
 kv = Builder.load_file("test3.kv")
 
 db = DataBase("users.txt")
+
 
 class test3(App):
     def build(self):
