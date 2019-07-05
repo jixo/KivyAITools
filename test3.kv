@@ -232,7 +232,7 @@ WindowManager:
                     app.root.current = "Sixth"
                     root.manager.transition.direction = "left"
             MyButton:
-                text: "Image\nObject Detection"
+                text: "Image Tool 2"
                 on_release:
                     app.root.current = "Seventh"
                     root.manager.transition.direction = "left"
@@ -573,9 +573,9 @@ WindowManager:
             cols: 3
             spacing: 10
             MyButton:
-                id: Obj_Detc
-                text:'AI\nImage Detection'
-                on_release: root.ObjectDetect()
+                id: face_Extract
+                text:'Face Extractor'
+                on_release: root.FaceExtract()
             MyButton1:
                 id: ??
                 text:'??'
